@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114810486387980386}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Box
+  m_TagString: Sphere
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,6 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startForce: {x: 0, y: 0, z: 0}
   moveSpeed: 0
+  explosion: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}
+  reflectMulti: 50
 --- !u!135 &135465824415007196
 SphereCollider:
   m_ObjectHideFlags: 1

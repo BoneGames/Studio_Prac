@@ -126,3 +126,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startForce: {x: 0, y: 0, z: 0}
   moveSpeed: 2
+  explosion: {fileID: 0}
+  reflectMulti: 0

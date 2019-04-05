@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxScript : MonoBehaviour {
+public class SphereScript : MonoBehaviour {
 
     Renderer rend;
     Rigidbody rigid;
@@ -13,6 +13,7 @@ public class BoxScript : MonoBehaviour {
     bool isGrabbed = false;
     float dragSpeed;
     public GameObject explosion;
+    public int reflectMulti;
 
 	void Start () {
         rigid = GetComponent<Rigidbody>();
@@ -26,25 +27,38 @@ public class BoxScript : MonoBehaviour {
 
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Wall")
-        {
-            //Debug.Log(this.name + ": hit Wall");
-            rigid.AddForce(new Vector3(-startForce.x, 0, 0));
-            //translation.x *= -1f;
-            //translation = new Vector3(x, y, 0);
-        }
-    }
+    //IEnumerator HitWall(GameObject sphere)
+    //{
+    //    sphere.GetComponent<Collider>().enabled = false;
+
+    //}
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.name == "LeftWall")
+    //    {
+    //        Debug.Log(other.name);
+    //        Vector3 reflectForce = Vector3.Reflect(other.transform.position, Vector3.left);
+    //        rigid.AddForce(reflectForce * reflectMulti);
+    //        //translation.x *= -1f;
+    //        //translation = new Vector3(x, y, 0);
+    //    }
+    //    if(other.name == "RightWall")
+    //    {
+    //        Debug.Log(other.name);
+    //        Vector3 reflectForce = Vector3.Reflect(other.transform.position, Vector3.right);
+    //        rigid.AddForce(reflectForce *reflectMulti);
+    //    }
+    //}
 
     
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Box" && !isGrabbed)
+        if (collision.transform.tag == "Sphere" && !isGrabbed)
         {
             Vector3 impact = transform.position - collision.transform.position;
             collision.transform.GetComponent<Rigidbody>().AddForce(impact * ((1 + dragSpeed) * 20), ForceMode.Impulse);
-            Debug.Log("Impact: " + impact);
+            //Debug.Log("Impact: " + impact);
         }
     }
     

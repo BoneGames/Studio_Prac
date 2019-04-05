@@ -11,7 +11,6 @@ public class TouchInput : MonoBehaviour
     private RaycastHit hit;
 
 
-    // Use this for initialization
     void Start()
     {
 
@@ -22,7 +21,6 @@ public class TouchInput : MonoBehaviour
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
-    // Update is called once per frame
     void Update()
     {
 #if UNITY_EDITOR
