@@ -18,9 +18,8 @@ public class VariableJoystick : JoystickInput
     private Vector2 fixedPosition = Vector2.zero;
     public enum JoystickType
         {
-            Fixed, Floating, Dynamic
+            Fixed, Floating, Dynamic, Player
         }
-
 
     public void SetMode (JoystickType joystickType)
     {

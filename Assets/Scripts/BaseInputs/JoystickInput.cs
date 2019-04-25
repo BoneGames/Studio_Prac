@@ -85,12 +85,12 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
             input = new Vector2(0, input.y);
     }
 
-    protected virtual void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
+    protected virtual void HandleInput(float magnitude, Vector2 normalisedInput, Vector2 radius, Camera cam)
     {
         if (magnitude > deadZone)
         {
             if (magnitude > 1)
-                input = normalised;
+                input = normalisedInput;
         }
         else
         input = Vector2.zero;
@@ -164,11 +164,5 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
     public virtual void OnPointerDown(PointerEventData eventData)
     {
          OnDrag(eventData);
-    }
-
-
-    private void Update()
-    {
-        //Debug.Log(input);
     }
 }

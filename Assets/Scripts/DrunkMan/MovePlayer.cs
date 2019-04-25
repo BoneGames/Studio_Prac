@@ -9,13 +9,15 @@ public class MovePlayer : MonoBehaviour {
     Vector3 translation;
     Rigidbody rigid;
     public float moveSpeed;
+    ConfigurableJoint cJoint;
     
     public float pushStrength = 2;
     public GameObject hoist, haloArm, pivot;
     public float rotateSpeed, leanAmount;
 
 	void Start () {
-        rigid = GetComponentInChildren<Rigidbody>();
+        rigid = GetComponent<Rigidbody>();
+        cJoint = GetComponentInParent<ConfigurableJoint>();
 	}
 
     void Move()
@@ -23,13 +25,14 @@ public class MovePlayer : MonoBehaviour {
         if(JSI.input != null && JSI.input != Vector2.zero)
         {
             Vector3 pushForce = new Vector3(JSI.input.x, 0, JSI.input.y) * pushStrength;
-            rigid.AddForce(pushForce);
+            rigid.AddForce(pushForce, ForceMode.Acceleration);
         }
     }
 	
 	void Update () {
         Move();
-        Lean();
+        //Lean();
+       //cJoint.targetRotation
         
     }
     void Lean()
