@@ -9,7 +9,7 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
 {
     #region Variables
     [SerializeField]
-    private float handlerRange = 1;
+    public float handlerRange = 1;
     [SerializeField]
     private float deadZone = 0;
     [SerializeField]
@@ -26,11 +26,11 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
 
     #region References
     private RectTransform baseRect = null;
-    private Canvas canvas;
+    public Canvas canvas;
     private Camera cam;
     public Vector2 input = Vector2.zero;
+    public Transform playerPos;
     #endregion
-
     #region Properties
 
     public float Horizontal
@@ -77,7 +77,7 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
         handle.anchoredPosition = Vector2.zero;
     }
 
-    private void FormatInput()
+    public void FormatInput()
     {
         if (axisOptions == AxisOptions.Horizontal)
             input = new Vector2(input.x, 0);
@@ -145,13 +145,14 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
         handle.anchoredPosition = Vector2.zero;
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public virtual void OnDrag(PointerEventData eventData)
     {
         cam = null;
         if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
         {
             cam = canvas.worldCamera;
         }
+
 
         Vector2 position = RectTransformUtility.WorldToScreenPoint(cam, background.position);
         Vector2 radius = background.sizeDelta * 0.5f;
@@ -164,5 +165,10 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
     public virtual void OnPointerDown(PointerEventData eventData)
     {
          OnDrag(eventData);
+    }
+
+    void Update()
+    {
+        //background.position = 
     }
 }

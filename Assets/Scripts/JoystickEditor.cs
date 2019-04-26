@@ -4,15 +4,17 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(JoystickInput), true)]
-public class JoystickEditor : Editor {
+public class JoystickEditor : Editor
+{
 
-    private SerializedProperty      handlerRange,
+    private SerializedProperty handlerRange,
                                     deadZone,
                                     axisOptions,
                                     snapX,
                                     snapY,
                                     handle;
-    protected SerializedProperty    background;
+    protected SerializedProperty background;
+    public SerializedProperty playerPos;
 
 
     protected Vector2 center = new Vector2(.5f, .5f);
@@ -26,6 +28,7 @@ public class JoystickEditor : Editor {
         snapY = serializedObject.FindProperty("snapY");
         background = serializedObject.FindProperty("background");
         handle = serializedObject.FindProperty("handle");
+        playerPos = serializedObject.FindProperty("playerPos");
     }
 
     protected virtual void DrawValues()
@@ -41,6 +44,7 @@ public class JoystickEditor : Editor {
     {
         EditorGUILayout.ObjectField(background, new GUIContent("Background", "The background's RectTransform component."));
         EditorGUILayout.ObjectField(handle, new GUIContent("Handle", "The handle's RectTransform component."));
+        EditorGUILayout.ObjectField(playerPos, new GUIContent("playerPos", "tracks player position on screen"));
     }
 
     public override void OnInspectorGUI()
@@ -53,7 +57,7 @@ public class JoystickEditor : Editor {
 
         serializedObject.ApplyModifiedProperties();
 
-        if(handle != null)
+        if (handle != null)
         {
             RectTransform handleRect = (RectTransform)handle.objectReferenceValue;
             handleRect.anchorMax = center;

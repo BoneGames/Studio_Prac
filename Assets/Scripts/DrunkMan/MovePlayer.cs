@@ -5,43 +5,96 @@ using UnityEngine;
 public class MovePlayer : MonoBehaviour {
 
     public JoystickInput JSI;
-    float distanceToTarget;
-    Vector3 translation;
     Rigidbody rigid;
-    public float moveSpeed;
     ConfigurableJoint cJoint;
     
-    public float pushStrength = 2;
-    public GameObject hoist, haloArm, pivot;
-    public float rotateSpeed, leanAmount;
+    public float moveSpeed = 2;
+    public GameObject hoist, haloArm, neck;
+    public float headRollSpeed, headRollAmount, leanSpeed, leanAmount;
+    float leanX, leanZ;
+    bool increasingX, increasingZ;
+
+
+   
 
 	void Start () {
         rigid = GetComponent<Rigidbody>();
         cJoint = GetComponentInParent<ConfigurableJoint>();
+
+        leanX = leanAmount - 0.1f;
+        leanZ = -0.1f;
+        increasingX = true;
+        increasingZ = true;
 	}
 
     void Move()
     {
         if(JSI.input != null && JSI.input != Vector2.zero)
         {
-            Vector3 pushForce = new Vector3(JSI.input.x, 0, JSI.input.y) * pushStrength;
-            rigid.AddForce(pushForce, ForceMode.Acceleration);
+            Vector3 move = new Vector3(JSI.input.x, 0, JSI.input.y) * moveSpeed;
+            rigid.AddForce(move, ForceMode.Acceleration);
         }
     }
 	
 	void Update () {
         Move();
-        //Lean();
-       //cJoint.targetRotation
-        
+        HeadLoll();
+        Lean();
+    
     }
+
     void Lean()
     {
-        hoist.transform.Rotate(0,rotateSpeed,0);
-        haloArm.transform.position = new Vector3(leanAmount, 0, 0);
-        pivot.transform.LookAt(haloArm.transform.position);
-        Vector3 leanDirection = new Vector3(haloArm.transform.position.x, transform.position.y, haloArm.transform.position.z) - transform.position;
-        rigid.AddForce(leanDirection.normalized, ForceMode.Impulse);
+        if(leanX >= leanAmount)
+        {
+            increasingX = false;
+        }
+        if(leanX <= -leanAmount)
+        {
+            increasingX = true;
+        }
+
+        if(increasingX)
+        {
+            leanX += Time.deltaTime * leanSpeed;
+        }
+        else
+        {
+            leanX -= Time.deltaTime * leanSpeed;
+        }
+
+
+
+        if (leanZ >= leanAmount)
+        {
+            increasingZ = false;
+        }
+        if (leanZ <= -leanAmount)
+        {
+            increasingZ = true;
+        }
+
+        if (increasingZ)
+        {
+            leanZ += Time.deltaTime * leanSpeed;
+        }
+        else
+        {
+            leanZ -= Time.deltaTime * leanSpeed;
+        }
+
+        
+
+
+        cJoint.targetAngularVelocity = new Vector3(leanX, 0, leanZ);
+    }
+
+    void HeadLoll()
+    {
+        hoist.transform.Rotate(0,headRollSpeed,0);
+        haloArm.transform.localPosition = new Vector3(headRollAmount, 0, 0);
+        Vector3 direction = (haloArm.transform.position - neck.transform.position).normalized;
+        neck.transform.up = direction;
     }
 
     private void OnCollisionEnter(Collision other)

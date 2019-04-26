@@ -8,12 +8,14 @@ public class VariableJoystickEditor : JoystickEditor {
 
     private SerializedProperty moveThreshold;
     private SerializedProperty joystickType;
+    //public SerializedProperty playerPos;
 
     protected override void OnEnable()
     {
         base.OnEnable();
         moveThreshold = serializedObject.FindProperty("moveThreshold");
         joystickType = serializedObject.FindProperty("joystickType");
+        //playerPos = serializedObject.FindProperty("playerPos");
     }
 
     public override void OnInspectorGUI()

@@ -24,7 +24,6 @@ public class Flicker : MonoBehaviour {
             if (streetLight.activeSelf)
             {
                 streetLight.SetActive(false);
-                Debug.Log("go");
             }
             else
             {
