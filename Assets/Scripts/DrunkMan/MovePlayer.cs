@@ -7,19 +7,20 @@ public class MovePlayer : MonoBehaviour {
     public JoystickInput JSI;
     Rigidbody rigid;
     ConfigurableJoint cJoint;
+    public Transform arms;
+    public float armSwingMax;
+    public bool armsRight;
     
     public float moveSpeed = 2;
     public GameObject hoist, haloArm, neck;
     public float headRollSpeed, headRollAmount, leanSpeed, leanAmount;
     float leanX, leanZ;
     bool increasingX, increasingZ;
-
-
-   
-
+    public float impactForce;
+    
 	void Start () {
-        rigid = GetComponent<Rigidbody>();
-        cJoint = GetComponentInParent<ConfigurableJoint>();
+        rigid = transform.GetChild(0).GetComponent<Rigidbody>();
+        cJoint = GetComponent<ConfigurableJoint>();
 
         leanX = leanAmount - 0.1f;
         leanZ = -0.1f;
@@ -40,9 +41,20 @@ public class MovePlayer : MonoBehaviour {
         Move();
         HeadLoll();
         Lean();
-    
+        ArmWobble();
     }
 
+    void ArmWobble()
+    {
+        float armSwing = Random.Range(0, armSwingMax);
+        if (Mathf.Abs(arms.localRotation.eulerAngles.z) > 20)
+        {
+            armsRight = !armsRight;
+            armSwing *= 0.5f;
+        }
+
+        arms.rotation *= armsRight ? Quaternion.Euler(0, 0, armSwingMax * Time.deltaTime) : Quaternion.Euler(0, 0, -armSwingMax * Time.deltaTime);
+    }
     void Lean()
     {
         if(leanX >= leanAmount)
@@ -54,16 +66,7 @@ public class MovePlayer : MonoBehaviour {
             increasingX = true;
         }
 
-        if(increasingX)
-        {
-            leanX += Time.deltaTime * leanSpeed;
-        }
-        else
-        {
-            leanX -= Time.deltaTime * leanSpeed;
-        }
-
-
+        leanX += increasingX ? Time.deltaTime * leanSpeed : -Time.deltaTime * leanSpeed;
 
         if (leanZ >= leanAmount)
         {
@@ -74,23 +77,14 @@ public class MovePlayer : MonoBehaviour {
             increasingZ = true;
         }
 
-        if (increasingZ)
-        {
-            leanZ += Time.deltaTime * leanSpeed;
-        }
-        else
-        {
-            leanZ -= Time.deltaTime * leanSpeed;
-        }
-
-        
-
+        leanZ += increasingZ ? Time.deltaTime * leanSpeed : -Time.deltaTime * leanSpeed;
 
         cJoint.targetAngularVelocity = new Vector3(leanX, 0, leanZ);
     }
 
     void HeadLoll()
     {
+        // rotate
         hoist.transform.Rotate(0,headRollSpeed,0);
         haloArm.transform.localPosition = new Vector3(headRollAmount, 0, 0);
         Vector3 direction = (haloArm.transform.position - neck.transform.position).normalized;
@@ -99,10 +93,14 @@ public class MovePlayer : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other)
     {
+        Debug.Log("aye");
         if(other.transform.tag == "Wall")
         {
-            Vector3 direction = transform.position - other.contacts[0].point;
-            rigid.AddForce(direction * 10, ForceMode.Impulse);
+            Vector3 direction = other.contacts[0].point - transform.position;
+            Vector3 barrierNormal = other.contacts[0].normal;
+
+            Vector3 outForce = Vector3.Reflect(new Vector3(direction.x, 0, direction.z), barrierNormal);
+            rigid.AddForce(outForce * impactForce, ForceMode.Impulse);
         }
     }
 }
