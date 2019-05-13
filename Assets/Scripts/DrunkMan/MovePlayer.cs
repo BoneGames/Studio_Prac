@@ -93,7 +93,6 @@ public class MovePlayer : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log("aye");
         if(other.transform.tag == "Wall")
         {
             Vector3 direction = other.contacts[0].point - transform.position;
