@@ -9,8 +9,8 @@ namespace CardGame
     [Serializable]
     public class CardProperties
     {
-        public string value;
         public int intValue;
+        public string stringValue;
         public Sprite sprite;
         public Element element;
     }

@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdd73b9dfe5a7b8429d41855b36ecff7, type: 3}
+  m_Name: Evil_Child
+  m_EditorClassIdentifier: 
+  cardType: {fileID: 0}
+  properties:
+  - intValue: 0
+    stringValue: Evil Child
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 1d07720b19cde444e8458e104298f680, type: 2}
+  - intValue: 0
+    stringValue: This Child thrives on destruction
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 98a258234e9ff2e41ae493e8e532bece, type: 2}
+  - intValue: 0
+    stringValue: '"Satan doesn''t pay child support..."'
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 12e7bc029a64f5b4281f3bdd5cee6f77, type: 2}
+  - intValue: 20
+    stringValue: 
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 3e579b6b3c462d84f8fe17481fb1f5de, type: 2}
+  - intValue: 5
+    stringValue: 
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 21390e62008891f4ab619cc26a12b039, type: 2}
+  - intValue: 25
+    stringValue: 
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: e10870b4b8ab9a64ea35d784ef11f118, type: 2}
+  - intValue: 0
+    stringValue: 
+    sprite: {fileID: 21300000, guid: b5649ff5071ecc746bd49485aacc7205, type: 3}
+    element: {fileID: 11400000, guid: 3be0de716d01bc142af561ae990250bb, type: 2}

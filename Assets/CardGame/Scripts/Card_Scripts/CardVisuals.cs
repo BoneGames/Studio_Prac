@@ -3,11 +3,16 @@ using UnityEngine;
 
 namespace CardGame
 {
-    public class CardVisuals
+    public class CardVisuals : MonoBehaviour
     {
         public Card card;
         public CardVisualProperties[] properties;
         public GameObject statHolder;
+
+        private void Start()
+        {
+            LoadCard(card);
+        }
         public void LoadCard(Card c)
         {
             if(c == null)
@@ -20,6 +25,23 @@ namespace CardGame
             for (int i = 0; i < c.properties.Length; i++)
             {
                 CardProperties cp = c.properties[i];
+                CardVisualProperties cvp = GetProperties(cp.element);
+                if(cvp == null)
+                {
+                    continue;
+                }
+                if(cp.element is ElementInt)
+                {
+                    cvp.text.text = cp.intValue.ToString();
+                }
+                if (cp.element is ElementImage)
+                {
+                    cvp.img.sprite = cp.sprite;
+                }
+                if (cp.element is ElementText)
+                {
+                    cvp.text.text = cp.stringValue;
+                }
             }
         }
 
