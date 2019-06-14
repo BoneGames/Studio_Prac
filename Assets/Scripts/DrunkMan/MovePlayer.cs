@@ -9,14 +9,15 @@ public class MovePlayer : MonoBehaviour {
     ConfigurableJoint cJoint;
     public Transform arms;
     public float armSwingMax;
-    public bool armsRight;
+    public bool armsRight, resettingLean;
     
     public float moveSpeed = 2;
     public GameObject hoist, haloArm, neck;
-    public float headRollSpeed, headRollAmount, leanSpeed, leanAmount;
+    public float headRollSpeed, headRollAmount, leanSpeed, leanAmount, resetLeanRate;
     float leanX, leanZ;
     bool increasingX, increasingZ;
-    public float impactForce;
+    public float bounceForce;
+
     
 	void Start () {
         rigid = transform.GetChild(0).GetComponent<Rigidbody>();
@@ -32,8 +33,32 @@ public class MovePlayer : MonoBehaviour {
     {
         if(JSI.input != null && JSI.input != Vector2.zero)
         {
+            // interupt lean reset
+            resettingLean = false;
+            // get move vector
             Vector3 move = new Vector3(JSI.input.x, 0, JSI.input.y) * moveSpeed;
+            // apply move force
             rigid.AddForce(move, ForceMode.Acceleration);
+            // add lean based on moveDirection
+            cJoint.targetRotation *= Quaternion.Euler(move.x, 0, move.y);
+        }
+        else if(cJoint.targetRotation != Quaternion.identity)
+        {
+            resettingLean = true;
+            Quaternion startRotation = cJoint.targetRotation;
+            LerpLeanToZero(startRotation);
+
+                //Euler(JSI.input.x, 0, JSI.input.y);
+        }
+    }
+
+    void LerpLeanToZero(Quaternion startRotation)
+    {
+        float timer = 0;
+        while(cJoint.targetRotation != Quaternion.identity || resettingLean)
+        {
+            timer += Time.deltaTime/resetLeanRate;
+            cJoint.targetRotation = Quaternion.Lerp(startRotation, Quaternion.identity, timer);
         }
     }
 	
@@ -57,11 +82,11 @@ public class MovePlayer : MonoBehaviour {
     }
     void Lean()
     {
-        if(leanX >= leanAmount)
+        if (leanX >= leanAmount)
         {
             increasingX = false;
         }
-        if(leanX <= -leanAmount)
+        if (leanX <= -leanAmount)
         {
             increasingX = true;
         }
@@ -99,7 +124,7 @@ public class MovePlayer : MonoBehaviour {
             Vector3 barrierNormal = other.contacts[0].normal;
 
             Vector3 outForce = Vector3.Reflect(new Vector3(direction.x, 0, direction.z), barrierNormal);
-            rigid.AddForce(outForce * impactForce, ForceMode.Impulse);
+            rigid.AddForce(outForce * bounceForce, ForceMode.Impulse);
         }
     }
 }
