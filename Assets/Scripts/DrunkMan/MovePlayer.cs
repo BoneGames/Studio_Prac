@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovePlayer : MonoBehaviour {
+public class MovePlayer : MonoBehaviour
+{
 
     public JoystickInput JSI;
     Rigidbody rigid;
@@ -10,16 +11,18 @@ public class MovePlayer : MonoBehaviour {
     public Transform arms;
     public float armSwingMax;
     public bool armsRight, resettingLean;
-    
+
     public float moveSpeed = 2;
     public GameObject hoist, haloArm, neck;
     public float headRollSpeed, headRollAmount, leanSpeed, leanAmount, resetLeanRate;
     float leanX, leanZ;
     bool increasingX, increasingZ;
     public float bounceForce;
+    public float leanRecoverRate;
 
-    
-	void Start () {
+
+    void Start()
+    {
         rigid = transform.GetChild(0).GetComponent<Rigidbody>();
         cJoint = GetComponent<ConfigurableJoint>();
 
@@ -27,11 +30,12 @@ public class MovePlayer : MonoBehaviour {
         leanZ = -0.1f;
         increasingX = true;
         increasingZ = true;
-	}
+    }
+
 
     void Move()
     {
-        if(JSI.input != null && JSI.input != Vector2.zero)
+        if (JSI.input != Vector2.zero)
         {
             // interupt lean reset
             resettingLean = false;
@@ -41,28 +45,35 @@ public class MovePlayer : MonoBehaviour {
             rigid.AddForce(move, ForceMode.Acceleration);
             // add lean based on moveDirection
             cJoint.targetRotation *= Quaternion.Euler(move.x, 0, move.y);
-        }
-        else if(cJoint.targetRotation != Quaternion.identity)
-        {
-            resettingLean = true;
-            Quaternion startRotation = cJoint.targetRotation;
-            LerpLeanToZero(startRotation);
 
-                //Euler(JSI.input.x, 0, JSI.input.y);
+            if (cJoint.angularXDrive.positionSpring > 0)
+            {
+                JointDrive drive = new JointDrive();
+                drive.positionSpring = cJoint.angularXDrive.positionSpring - leanRecoverRate * Time.deltaTime;
+                drive.positionDamper = 2;
+                drive.maximumForce = 3;
+
+                cJoint.angularXDrive = drive;
+                cJoint.angularYZDrive = drive;
+            }
+        }
+        else if (cJoint.targetRotation != Quaternion.Euler(0, 0, 0))// && !resettingLean)
+        {
+            if (cJoint.angularXDrive.positionSpring < 10)
+            {
+                JointDrive drive = new JointDrive();
+                drive.positionSpring = cJoint.angularXDrive.positionSpring + leanRecoverRate * Time.deltaTime;
+                drive.positionDamper = 2;
+                drive.maximumForce = 3;
+
+                cJoint.angularXDrive = drive;
+                cJoint.angularYZDrive = drive;
+            }
         }
     }
 
-    void LerpLeanToZero(Quaternion startRotation)
+    void Update()
     {
-        float timer = 0;
-        while(cJoint.targetRotation != Quaternion.identity || resettingLean)
-        {
-            timer += Time.deltaTime/resetLeanRate;
-            cJoint.targetRotation = Quaternion.Lerp(startRotation, Quaternion.identity, timer);
-        }
-    }
-	
-	void Update () {
         Move();
         HeadLoll();
         Lean();
@@ -110,7 +121,7 @@ public class MovePlayer : MonoBehaviour {
     void HeadLoll()
     {
         // rotate
-        hoist.transform.Rotate(0,headRollSpeed,0);
+        hoist.transform.Rotate(0, headRollSpeed, 0);
         haloArm.transform.localPosition = new Vector3(headRollAmount, 0, 0);
         Vector3 direction = (haloArm.transform.position - neck.transform.position).normalized;
         neck.transform.up = direction;
@@ -118,7 +129,7 @@ public class MovePlayer : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other)
     {
-        if(other.transform.tag == "Wall")
+        if (other.transform.tag == "Wall")
         {
             Vector3 direction = other.contacts[0].point - transform.position;
             Vector3 barrierNormal = other.contacts[0].normal;

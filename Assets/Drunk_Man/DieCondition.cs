@@ -25,6 +25,7 @@ public class DieCondition : MonoBehaviour
         rend = GetComponent<Renderer>();
         //sparkles = GetComponentsInChildren<ParticleSystem>();
         rigid = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void KillPlayer()
@@ -77,9 +78,9 @@ public class DieCondition : MonoBehaviour
         Debug.Log("force: "+collision.relativeVelocity.magnitude);
         if (collision.relativeVelocity.magnitude > killCollision)
         {
-
-        }
             audioSource.Play();
+        }
+            
     }
 
 

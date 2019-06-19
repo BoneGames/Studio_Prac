@@ -2857,6 +2857,108 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 667808682}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &674375873 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9011555617979269108, guid: f877eab4635e08f4a998787f9fe2f49f,
+    type: 3}
+  m_PrefabInstance: {fileID: 9011555617003572603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &674375883
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674375873}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &718835539
 GameObject:
   m_ObjectHideFlags: 0
@@ -5339,6 +5441,7 @@ MonoBehaviour:
   arms: {fileID: 252598502}
   armSwingMax: 20
   armsRight: 0
+  resettingLean: 0
   moveSpeed: 13
   hoist: {fileID: 1147253756}
   haloArm: {fileID: 744593770}
@@ -5347,7 +5450,9 @@ MonoBehaviour:
   headRollAmount: 0.3
   leanSpeed: 0.5
   leanAmount: 1
-  impactForce: 20
+  resetLeanRate: 0
+  bounceForce: 0
+  leanRecoverRate: 0
 --- !u!153 &1484610767
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -7396,5 +7501,60 @@ PrefabInstance:
       propertyPath: JSI
       value: 
       objectReference: {fileID: 552326639}
+    - target: {fileID: 9011555617979269097, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: leanRecoverRate
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_YDrive.maximumForce
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_ZDrive.maximumForce
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_XDrive.maximumForce
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_YDrive.positionDamper
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_ZDrive.positionDamper
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_XDrive.positionDamper
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_TargetAngularVelocity.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_RotationDriveMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011555617979269098, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: m_ProjectionMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 51148090992098131, guid: f877eab4635e08f4a998787f9fe2f49f,
+        type: 3}
+      propertyPath: fallAngle
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f877eab4635e08f4a998787f9fe2f49f, type: 3}
