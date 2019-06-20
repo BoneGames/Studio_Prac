@@ -9617,7 +9617,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9011555617979269101
 Transform:
   m_ObjectHideFlags: 0
@@ -9826,6 +9826,7 @@ MonoBehaviour:
   arms: {fileID: 9011555617221039517}
   armSwingMax: 20
   armsRight: 0
+  resettingLean: 0
   moveSpeed: 13
   hoist: {fileID: 9011555618146565767}
   haloArm: {fileID: 9011555616670159889}
@@ -9834,7 +9835,9 @@ MonoBehaviour:
   headRollAmount: 0.3
   leanSpeed: 0.5
   leanAmount: 1
-  impactForce: 20
+  resetLeanRate: 0
+  bounceForce: 0
+  leanRecoverRate: 0
 --- !u!114 &51148090992098131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9860,6 +9863,7 @@ MonoBehaviour:
   gravity: 0.35
   dampen: 3
   rate: 3000
+  killCollision: 0
   speed:
     m_Mode: 3
     m_CurveMultiplier: 0
