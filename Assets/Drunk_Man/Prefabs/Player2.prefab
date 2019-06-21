@@ -9549,20 +9549,6 @@ Transform:
   m_Father: {fileID: 9011555617979269101}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &540317832
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9011555617088569475}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 0400127d56aa10b4d957d10c807b3858, type: 3}
 --- !u!1 &9011555617221039518
 GameObject:
   m_ObjectHideFlags: 0
@@ -10098,11 +10084,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9011555617979269101}
     m_Modifications:
-    - target: {fileID: 3944456553674413912, guid: b44e9719bb97547449eae773cf74a574,
-        type: 3}
-      propertyPath: m_Name
-      value: dieParticle
-      objectReference: {fileID: 0}
     - target: {fileID: 3944456553674413733, guid: b44e9719bb97547449eae773cf74a574,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10182,8 +10163,12 @@ PrefabInstance:
         type: 3}
       propertyPath: TriggerModule.collisionShape0
       value: 
-      objectReference: {fileID: 2054746775, guid: f877eab4635e08f4a998787f9fe2f49f,
+      objectReference: {fileID: 0}
+    - target: {fileID: 3944456553674413912, guid: b44e9719bb97547449eae773cf74a574,
         type: 3}
+      propertyPath: m_Name
+      value: dieParticle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b44e9719bb97547449eae773cf74a574, type: 3}
 --- !u!4 &9011555617113778809 stripped
@@ -10274,11 +10259,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9011555617979269101}
     m_Modifications:
-    - target: {fileID: 3944456553674413912, guid: b44e9719bb97547449eae773cf74a574,
-        type: 3}
-      propertyPath: m_Name
-      value: dieParticle (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 3944456553674413733, guid: b44e9719bb97547449eae773cf74a574,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10358,8 +10338,12 @@ PrefabInstance:
         type: 3}
       propertyPath: TriggerModule.collisionShape0
       value: 
-      objectReference: {fileID: 2054746775, guid: f877eab4635e08f4a998787f9fe2f49f,
+      objectReference: {fileID: 0}
+    - target: {fileID: 3944456553674413912, guid: b44e9719bb97547449eae773cf74a574,
         type: 3}
+      propertyPath: m_Name
+      value: dieParticle (1)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b44e9719bb97547449eae773cf74a574, type: 3}
 --- !u!4 &5454699453699241308 stripped

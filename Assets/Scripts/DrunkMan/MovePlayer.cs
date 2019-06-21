@@ -18,7 +18,8 @@ public class MovePlayer : MonoBehaviour
     float leanX, leanZ;
     bool increasingX, increasingZ;
     public float bounceForce;
-    public float leanRecoverRate;
+
+    public float leanMultiX, leanMultiY;
 
 
     void Start()
@@ -35,39 +36,63 @@ public class MovePlayer : MonoBehaviour
 
     void Move()
     {
-        if (JSI.input != Vector2.zero)
+        Vector3 keyMove = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+
+
+        if (JSI.input != Vector2.zero || keyMove != Vector3.zero)
         {
+
             // interupt lean reset
             resettingLean = false;
-            // get move vector
-            Vector3 move = new Vector3(JSI.input.x, 0, JSI.input.y) * moveSpeed;
+
+            Vector3 move;
+            if (keyMove == Vector3.zero)
+            {
+                // get move vector
+                move = new Vector3(JSI.input.x, 0, JSI.input.y) * moveSpeed;
+            }
+            else
+            {
+                move = keyMove * moveSpeed;
+            }
+
             // apply move force
             rigid.AddForce(move, ForceMode.Acceleration);
             // add lean based on moveDirection
-            cJoint.targetRotation *= Quaternion.Euler(move.x, 0, move.y);
 
-            if (cJoint.angularXDrive.positionSpring > 0)
-            {
-                JointDrive drive = new JointDrive();
-                drive.positionSpring = cJoint.angularXDrive.positionSpring - leanRecoverRate * Time.deltaTime;
-                drive.positionDamper = 2;
-                drive.maximumForce = 3;
+            cJoint.targetRotation *= Quaternion.Euler(-move.x, 0, move.y);
 
-                cJoint.angularXDrive = drive;
-                cJoint.angularYZDrive = drive;
-            }
+            leanMultiX += move.z * Time.deltaTime/3;
+            leanMultiY += move.x * Time.deltaTime/3;
+
+            //if (cJoint.angularXDrive.positionSpring > 0)
+            //{
+            //    JointDrive drive = new JointDrive();
+            //    drive.positionSpring = cJoint.angularXDrive.positionSpring - leanRecoverRate * Time.deltaTime;
+            //    drive.positionDamper = 2;
+            //    drive.maximumForce = 3;
+
+            //    cJoint.angularXDrive = cJoint.angularYZDrive = drive;
+            //}
         }
-        else if (cJoint.targetRotation != Quaternion.Euler(0, 0, 0))// && !resettingLean)
+        else if (cJoint.targetRotation != Quaternion.Euler(0, 0, 0) || leanMultiX != 1 || leanMultiY != 1)// && !resettingLean)
         {
-            if (cJoint.angularXDrive.positionSpring < 10)
-            {
-                JointDrive drive = new JointDrive();
-                drive.positionSpring = cJoint.angularXDrive.positionSpring + leanRecoverRate * Time.deltaTime;
-                drive.positionDamper = 2;
-                drive.maximumForce = 3;
+            leanMultiX = Mathf.Lerp(leanMultiX, 0, Time.deltaTime);
+            leanMultiY = Mathf.Lerp(leanMultiY, 0, Time.deltaTime);
+            //if (cJoint.angularXDrive.positionSpring < 10)
+            //{
+            //    JointDrive drive = new JointDrive();
+            //    drive.positionSpring = cJoint.angularXDrive.positionSpring + leanRecoverRate * Time.deltaTime;
+            //    drive.positionDamper = 2;
+            //    drive.maximumForce = 3;
 
-                cJoint.angularXDrive = drive;
-                cJoint.angularYZDrive = drive;
+            //    cJoint.angularXDrive = drive;
+            //    cJoint.angularYZDrive = drive;
+            //}
+            if(cJoint.targetRotation.eulerAngles.magnitude > 0.1)
+            {
+                cJoint.targetRotation = Quaternion.Slerp(cJoint.targetRotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 2);
             }
         }
     }
@@ -115,7 +140,7 @@ public class MovePlayer : MonoBehaviour
 
         leanZ += increasingZ ? Time.deltaTime * leanSpeed : -Time.deltaTime * leanSpeed;
 
-        cJoint.targetAngularVelocity = new Vector3(leanX, 0, leanZ);
+        cJoint.targetAngularVelocity = new Vector3(leanX, 0, leanZ) + new Vector3(-leanMultiX, 0, leanMultiY);
     }
 
     void HeadLoll()
