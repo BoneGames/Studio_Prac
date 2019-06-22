@@ -64,6 +64,7 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
 
     protected virtual void Start()
     {
+        playerPos = FindObjectOfType<MovePlayer>().transform;
         handleRange = handlerRange;
         DeadZone = deadZone;
         baseRect = GetComponent<RectTransform>();

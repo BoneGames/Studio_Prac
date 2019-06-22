@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DieCondition : MonoBehaviour
+public class WinLoseCondition : MonoBehaviour
 {
     public float fallAngle;
     Collider col;
@@ -18,6 +18,7 @@ public class DieCondition : MonoBehaviour
     public bool alive;
 
     AudioSource audioSource;
+    public UI ui;
 
     void Start()
     {
@@ -26,6 +27,8 @@ public class DieCondition : MonoBehaviour
         //sparkles = GetComponentsInChildren<ParticleSystem>();
         rigid = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        alive = true;
+        ui = FindObjectOfType<UI>();
     }
 
     void KillPlayer()
@@ -36,7 +39,7 @@ public class DieCondition : MonoBehaviour
         rigid.isKinematic = true;
 
         arms.AddComponent<Rigidbody>();
-        arms.GetComponent<MeshCollider>().convex = true;
+        arms.GetComponent<MeshCollider>().enabled = true;
         head.AddComponent<Rigidbody>();
 
         arms.transform.parent = null;
@@ -48,42 +51,38 @@ public class DieCondition : MonoBehaviour
         {
             sparkles[i].Stop();
             dieSparkles[i].Play();
-            //var emissionModule = sparkles[i].emission;
-            //emissionModule.rateOverTime = rate;
-            //var triggerModlule = sparkles[i].trigger;
-            //triggerModlule.enabled = false;
-
-            //var velocityOverLifetimeModule = sparkles[i].velocityOverLifetime;
-            //velocityOverLifetimeModule.enabled = true;
-            //velocityOverLifetimeModule.speedModifier = velocityOverLifetime;
-
-            //var collisionModule = sparkles[i].collision;
-            //collisionModule.enabled = true;
-            //collisionModule.dampen = dampen;
-
-            //var main = sparkles[i].main;
-            //// increase particle lifetime
-            //main.startLifetime = lifeTime;
-
-            //main.startSpeed = speed;
-            //// turn off looping
-            //main.loop = false;
-            //// set gravity
-            //main.gravityModifier = gravity;
+          
         }
+        if(ui)
+        {
+            ui.DisplayScore();
+        }
+        else
+        {
+            FindObjectOfType<UI>().DisplayScore();
+        }
+        
     }
 
     void OnCollisionEnter(Collision collision)
     {
         Debug.Log("force: "+collision.relativeVelocity.magnitude);
-        if (collision.relativeVelocity.magnitude > killCollision)
+        if (collision.relativeVelocity.magnitude > killCollision && alive)
         {
             audioSource.Play();
+            KillPlayer();
+            alive = false;
         }
             
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Finish")
+        {
+            ui.DisplayScore();
+        }
+    }
     void Update()
     {
         if(Vector3.Angle(Vector3.up, transform.up) > fallAngle && alive)
